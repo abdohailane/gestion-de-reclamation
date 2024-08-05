@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" rel="stylesheet"> <!-- FontAwesome -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    {% load static %}
+    <style>
+        body {
+            background-color: whitesmoke;
+            background-image: url("{% static 'App/images/tgr4.jpg' %}");
+            border-image: fill 0 linear-gradient(#0001,#323232);
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            height: 90vh;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        .chat-container::before {
+            content: "";
+            background-image: url("{% static 'App/images/logo.png' %}");
+            background-size: cover; /* Couvre toute la surface du conteneur */
+            background-position: center;
+            opacity: 0.4; /* Ajustez l'opacité selon vos besoins */
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+        .chat-content {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            background: #2944dc;
+            padding: 10px 15px;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 2;
+        }
+        .chat-header h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: transparent; /* Transparent to show background image */
+            z-index: 2;
+        }
+        
+        .message p {
+            margin: 0;
+        }
+        .message {
+    max-width: 75%;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Messages de l'utilisateur affichés à gauche */
+.user-message {
+    background-color: #ffffff;
+    align-self: flex-start;
+    border: 1px solid #ddd;
+    border-radius: 10px 10px 10px 0; /* Coins arrondis à gauche */
+    margin-right: auto; /* Pousse le message à gauche */
+}
+
+/* Messages de l'administrateur affichés à droite */
+.admin-message {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+    border: 1px solid #ddd;
+    border-radius: 10px 10px 0 10px; /* Coins arrondis à droite */
+    margin-left: auto; /* Pousse le message à droite */
+}
+
+.timestamp {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+    text-align: right;
+}
+
+        .chat-footer {
+            padding: 10px;
+            background-color: #f0f2f5;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid #ddd;
+            position: relative;
+            z-index: 2;
+        }
+        .chat-footer textarea {
+            flex-grow: 1;
+            border-radius: 25px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            resize: none;
+            height: 40px;
+            margin-right: 10px;
+        }
+        .chat-footer .send-icon {
+            color: #2030db;
+
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .chat-footer .send-icon:hover {
+            color: #21e33b;        }
+        a{color: #f6f3f3;}  
+        a:hover{color: #21e33b;   }  
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <a href="/Reclam/"><i class="glyphicon glyphicon-arrow-left" ></i></a>
+            <h2>{{ user_info.name }}</h2>
+        </div>
+        <div class="chat-content">
+            <div class="chat-messages">
+                <!-- Message initial de l'utilisateur (Description) -->
+                <div class="message user-message">
+                    <p>{{ user.description }}</p>
+                </div>
+
+                <!-- Réponse initiale de l'admin (Response) -->
+                {% if user.response %}
+                <div class="message admin-message">
+                    <p>{{ user.response }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Messages existants -->
+                {% for message in messages %}
+                    <div class="message {% if message.is_admin %}admin-message{% else %}user-message{% endif %}">
+                        <p>{{ message.message }}</p>
+                        <span class="timestamp">{{ message.timestamp }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <form method="post" id="chat-form" class="chat-footer">
+                {% csrf_token %}
+                <textarea class="form-control" name="message" rows="1" placeholder="Écrire un message..." id="message-input"></textarea>
+                <i class="fa-solid fa-paper-plane send-icon" id="send-icon"></i>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('send-icon').addEventListener('click', function() {
+            document.getElementById('chat-form').submit();
+        });
+    </script>
+</body>
+</html>

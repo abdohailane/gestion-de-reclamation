@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Menu</title>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    {% load static %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        * {
+            margin: 0; 
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: whitesmoke;
+            background-image: url("{% static 'App/images/tgr2.jpeg' %}");
+            border-image: fill 0 linear-gradient(#0001,#000);
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+        header {
+            background-color: rgb(155, 131, 98);
+            width: 100%;
+            position: fixed;
+            z-index: 999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 200px;
+        }
+        .logo img {
+            width: 70px;
+            height: 70px;
+        }
+        .navigation a {
+            text-decoration: none;
+            color: rgb(7, 7, 9);
+            text-transform: uppercase;
+            font-size: 1.1em;
+            font-weight: 500;
+            padding: 30px;
+        }
+        .navigation a:hover {
+            color: rgb(245, 243, 247);
+        }
+        .main {
+            padding-left: 70px;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .main h2 {
+            color: rgb(155, 131, 98);
+            font-size: 1.4em;
+            font-weight: 500;
+        }
+        .main h2 span {
+            display: inline-block;
+            margin-top: 10px;
+            color: rgb(249, 243, 243);
+            font-size: 2em;
+            font-weight: 800;
+        }
+        .main h3 {
+            color: rgb(155, 131, 98);
+            margin-top: 10px;
+            font-size: 1.8em;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        .sideBar {
+            position: fixed;
+            width: 200px;
+            height: 100vh;
+            background-color: #444; /* Changer la couleur de fond de la sidebar ici */
+            right: -220px;
+            z-index: 1;
+            display: block;
+            transition: 0.35s;
+            top: 0;
+        }
+        .sideBar #close {
+            float: left;
+            margin-left: 10px;
+            color: rgb(155, 131, 98); /* Changer la couleur du bouton de fermeture ici */
+            font-size: 40px;
+            cursor: pointer;
+        }
+        .sideBar ul {
+            list-style: none;
+            margin-top: 15vh;
+        }
+        .sideBar li {
+            font-family: "Raleway", sans-serif;
+            padding-top: 25px;
+            padding-bottom: 25px;
+            text-align: center;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .sideBar li a {
+            color: rgb(155, 131, 98); /* Changer la couleur des liens ici */
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .sideBar li:hover a {
+            color: whitesmoke !important;
+        }
+        .sideBar li:hover {
+            background-color: #666; /* Changer la couleur de fond au survol ici */
+        }
+        #openButton {
+            font-size: 40px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#" class="logo"><img src="{% static 'App/images/logo.png' %}" alt="Logo"></a>
+        <nav class="navigation">
+            <a href="Mise/">Mise à jour utilisateur</a>
+            <a href="Reclam/">Traitement Reclamation</a>
+        </nav>
+        <ion-icon id="openButton" name="menu-outline"></ion-icon>
+    </header>
+    <section class="main">
+        <div>
+            <h2>Bienvenue au Trésorerie Générale du Royaume<br><span> Bienvenue Admin {{ user.name }}</span></h2>
+            <h3>Si vous souhaitez</h3>
+        </div>
+    </section>
+    <div class="sideBar" id="sideBar">
+        <a id="close">&times;</a>
+        <ul>
+            <li><h3><a href="Mise/"><i class="glyphicon glyphicon-user"> Mise à jour utilisateur </i></a></h3></li>
+            <li><h3><a href="Reclam/"><i class="glyphicon glyphicon-envelope"> Traitement de Reclamation </i></a></h3></li>
+            <li><h3><a href="login/"><i class="glyphicon glyphicon-arrow-left"> Retour </i></a></h3></li>
+
+        </ul>
+    </div>
+    <script>
+        const sideBar = document.getElementById("sideBar");
+        const openButton = document.getElementById("openButton");
+        const closeBar = document.getElementById("close");
+        let sideBarState = false;
+
+        function sideBarFunction() {
+            if (!sideBarState) {
+                sideBar.style.right = "0";
+                sideBarState = true;
+            } else {
+                sideBar.style.right = "-220px";
+                sideBarState = false;
+            }
+        }
+
+        openButton.onclick = () => {
+            sideBarFunction();
+        }
+
+        closeBar.onclick = () => {
+            sideBarFunction();
+        }
+
+        document.onclick = function(e) {
+            if (e.target.id !== "sideBar" && e.target.id !== "openButton" && !sideBar.contains(e.target)) {
+                sideBar.style.right = "-220px";
+                sideBarState = false;
+            }
+        }
+        document.getElementById('openButton').addEventListener('click', function() {
+            let icon = this;
+            if (icon.name === "menu-outline") {
+                icon.name = "close-outline";
+            } else {
+                icon.name = "menu-outline";
+            }
+        });
+    </script>
+</body>
+</html>

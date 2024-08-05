@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Reclamation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    {% load static %}
+    <style>
+        body {
+            background-color: whitesmoke;
+            background-image: url("{% static 'App/images/tgr4.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .container-fluid {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .card-header {
+            background-color: #17a2b8;
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .table thead th {
+            background-color: #e9ecef;
+        }
+        .table td, .table th {
+            vertical-align: middle;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid my-5">
+        <div class="card w-75 m-auto">
+            <div class="card-header text-center">
+                User Reclamation
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered bg-white">
+                    <tbody>
+                        <tr>
+                            <th>Nom de Reclamateur</th>
+                            <td>{{user.user}}</td>
+                        </tr>
+                        <tr>
+                            <th>Description de Probleme</th>
+                            <td>{{user.description}}</td>
+                        </tr>
+                        <tr>
+                            <th>Type</th>
+                            <td>{{user.type}}</td>
+                        </tr>
+                        <tr>
+                            <th>Selection</th>
+                            <td>{{user.selection}}</td>
+                        </tr>
+                        <tr>
+                            <th>Date of Add</th>
+                            <td>{{user.date_of_Add}}</td>
+                        </tr>
+                        <tr>
+                            <th>Repondre</th>
+                            <td>{{user.response}}</td>
+                        </tr>
+                        <tr>
+                            <th>date de changement etat</th>
+                            <td>{{user.date_de_changement}}</td>
+                        </tr>
+ 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-primary">Retour</a>
+
+        </div>
+    </div>
+</body>
+</html>
